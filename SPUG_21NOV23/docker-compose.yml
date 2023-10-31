@@ -1,0 +1,47 @@
+version: "3.8"
+
+services:
+  app:
+    image: demo-app
+    container_name: demo-app
+    build:
+      context: .
+      dockerfile: .docker/Dockerfile.app
+    ports:
+      - 3000:3000
+    networks:
+      - demo-public
+    volumes:
+      - ./app/src:/home/user/code/app/src
+      - ./app/vite.config.js:/home/user/code/app/vite.config.js
+      - ./app/package.json:/home/user/code/app/package.json
+  nginx:
+    image: demo-nginx
+    container_name: demo-nginx
+    build:
+      context: .
+      dockerfile: .docker/Dockerfile.nginx
+    volumes:
+      - ./.nginx/conf.d:/etc/nginx/conf.d
+      - ./app/build:/app/build
+    depends_on:
+      - api
+    network_mode: host
+  api:
+    image: demo-api
+    container_name: demo-api
+    build:
+      context: .
+      dockerfile: .docker/Dockerfile.api
+    ports:
+      - 8080:8080
+    volumes:
+      - ./:/home/user/code
+    networks:
+      - demo-public
+
+networks:
+  demo-public:
+    name: demo-public
+    driver: bridge
+

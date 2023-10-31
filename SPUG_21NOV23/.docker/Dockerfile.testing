@@ -1,0 +1,8 @@
+FROM demo-api:latest
+
+WORKDIR /home/user
+
+RUN python -m pip install -i https://pypi.org/simple pytest ipython requests pdbpp pip-tools \
+ && echo "alias interact from IPython import embed; embed()" > "/home/user/.pdbrc" \
+ && echo 'export PS1="(test) $PS1"' >> /home/user/.bashrc
+
