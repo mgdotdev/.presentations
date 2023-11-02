@@ -1,6 +1,8 @@
 from gunicorn.app.base import BaseApplication
 from flask import Flask
 
+from . import v1
+
 
 class StandaloneApplication(BaseApplication):
     def __init__(self, app, options=None):
@@ -25,9 +27,7 @@ def main():
     }
     app = Flask(__name__)
 
-    @app.route("/")
-    def hello():
-        return "Hello World!"
+    app.register_blueprint(v1.bp)
 
     StandaloneApplication(app, conf).run()
 

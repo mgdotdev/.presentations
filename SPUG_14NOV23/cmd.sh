@@ -24,8 +24,14 @@ test() {
     docker rm $instance &> /dev/null
 }
 
+restart() {
+    docker compose down -t 0
+    docker compose up -d
+}
+
 # main
 case $1 in
     "build"|"b") build $@ ;;
     "test"|"t") test $@ ;;
+    "restart") restart $@ ;;
 esac
