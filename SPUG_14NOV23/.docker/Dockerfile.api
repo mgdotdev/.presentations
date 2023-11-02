@@ -1,11 +1,13 @@
 FROM python:3.11
 
+ARG FRAMEWORK
+
 RUN adduser --disabled-password --gecos '' user
 
 WORKDIR /home/user/code
 
-COPY --chown=user ./api/src/ ./api/src/
-COPY --chown=user ./api/setup.py ./api/requirements.txt ./api/
+COPY --chown=user ./${FRAMEWORK}/src/ ./api/src/
+COPY --chown=user ./${FRAMEWORK}/setup.py ./${FRAMEWORK}/requirements.txt ./api/
 
 USER user
 

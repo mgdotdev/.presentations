@@ -25,21 +25,50 @@ services:
       - ./.nginx/conf.d:/etc/nginx/conf.d
       - ./app/build:/app/build
     depends_on:
-      - api
+      - cherrypy
     network_mode: host
-  api:
-    image: demo-api
-    container_name: demo-api
+  cherrypy:
+    image: demo-cherrypy
+    container_name: demo-cherrypy
     build:
       context: .
       dockerfile: .docker/Dockerfile.api
+      args:
+        FRAMEWORK: cherrypy
     ports:
       - 8080:8080
     volumes:
-      - ./:/home/user/code
+      - ./cherrypy:/home/user/code/api
     networks:
       - demo-public
-
+  fastapi:
+    image: demo-fastapi
+    container_name: demo-fastapi
+    build:
+      context: .
+      dockerfile: .docker/Dockerfile.api
+      args:
+        FRAMEWORK: fastapi
+    ports:
+      - 8081:8000
+    volumes:
+      - ./fastapi:/home/user/code/api
+    networks:
+      - demo-public
+  flask:
+    image: demo-flask
+    container_name: demo-flask
+    build:
+      context: .
+      dockerfile: .docker/Dockerfile.api
+      args:
+        FRAMEWORK: flask
+    ports:
+      - 8082:8080
+    volumes:
+      - ./flask:/home/user/code/api
+    networks:
+      - demo-public
 networks:
   demo-public:
     name: demo-public

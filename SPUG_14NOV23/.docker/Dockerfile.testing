@@ -1,8 +1,13 @@
-FROM demo-api:latest
+ARG FRAMEWORK
+
+FROM demo-${FRAMEWORK}:latest
+
+ARG FRAMEWORK
+ENV FRAMEWORK=${FRAMEWORK}
 
 WORKDIR /home/user
 
 RUN python -m pip install -i https://pypi.org/simple pytest ipython requests pdbpp pip-tools \
  && echo "alias interact from IPython import embed; embed()" > "/home/user/.pdbrc" \
- && echo 'export PS1="(test) $PS1"' >> /home/user/.bashrc
+ && echo 'export PS1="(${FRAMEWORK}) $PS1"' >> /home/user/.bashrc
 
