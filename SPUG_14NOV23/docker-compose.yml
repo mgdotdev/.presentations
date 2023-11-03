@@ -10,7 +10,7 @@ services:
     ports:
       - 3000:3000
     networks:
-      - demo-public
+      - demo-network
     volumes:
       - ./app/src:/home/user/code/app/src
       - ./app/vite.config.js:/home/user/code/app/vite.config.js
@@ -40,7 +40,9 @@ services:
     volumes:
       - ./cherrypy:/home/user/code/api
     networks:
-      - demo-public
+      - demo-network
+    env_file:
+      - .env/redis.env
   fastapi:
     image: demo-fastapi
     container_name: demo-fastapi
@@ -54,7 +56,9 @@ services:
     volumes:
       - ./fastapi:/home/user/code/api
     networks:
-      - demo-public
+      - demo-network
+    env_file:
+      - .env/redis.env
   flask:
     image: demo-flask
     container_name: demo-flask
@@ -68,9 +72,23 @@ services:
     volumes:
       - ./flask:/home/user/code/api
     networks:
-      - demo-public
+      - demo-network
+    env_file:
+      - .env/redis.env
+  redis:
+    container_name: demo-redis
+    image: redis:latest
+    build:
+      context: .
+      dockerfile: .docker/Dockerfile.redis
+    networks:
+      - demo-network
+    ports:
+      - 6379:6379
+    env_file:
+      - .env/redis.env
 networks:
-  demo-public:
-    name: demo-public
+  demo-network:
+    name: demo-network
     driver: bridge
 

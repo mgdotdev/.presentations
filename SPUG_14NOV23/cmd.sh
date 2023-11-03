@@ -17,8 +17,9 @@ test() {
     docker run -d -ti \
         -v $PWD:/home/user/code \
         --name $instance \
+        --env-file .env/redis.env \
         demo-testing-$2 bash
-    docker network connect demo-public $instance
+    docker network connect demo-network $instance
     docker exec -it $instance bash
     docker kill $instance &> /dev/null
     docker rm $instance &> /dev/null

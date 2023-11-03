@@ -1,0 +1,8 @@
+FROM redis:latest
+
+WORKDIR /home/user/code
+
+COPY --chown=user .docker/scripts/redis.sh .docker/scripts/redis.sh
+
+CMD [ "sh", ".docker/scripts/redis.sh" ]
+

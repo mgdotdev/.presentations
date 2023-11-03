@@ -9,6 +9,9 @@ WORKDIR /home/user/code
 COPY --chown=user ./${FRAMEWORK}/src/ ./api/src/
 COPY --chown=user ./${FRAMEWORK}/setup.py ./${FRAMEWORK}/requirements.txt ./api/
 
+COPY --chown=user ./core/src/ ./core/src/
+COPY --chown=user ./core/setup.py ./core/requirements.txt ./core/
+
 USER user
 
 WORKDIR /home/user
@@ -23,6 +26,8 @@ WORKDIR /home/user/code
 
 RUN python3 -m pip install --upgrade pip \
  && python3 -m pip install -r ./api/requirements.txt \
- && python3 -m pip install -e ./api --no-cache-dir
+ && python3 -m pip install -e ./api --no-cache-dir \
+ && python3 -m pip install -r ./core/requirements.txt \
+ && python3 -m pip install -e ./core --no-cache-dir
 
 CMD ["python3", "-m", "api"]
