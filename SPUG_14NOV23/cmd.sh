@@ -15,7 +15,7 @@ test() {
             . --no-cache
     }
     docker run -d -ti \
-        -v $PWD:/home/user/code \
+        -v $PWD/$2:/home/user/code/api \
         --name $instance \
         --env-file .env/redis.env \
         demo-testing-$2 bash
