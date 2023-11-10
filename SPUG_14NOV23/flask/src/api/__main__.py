@@ -2,6 +2,7 @@ from gunicorn.app.base import BaseApplication
 from flask import Flask
 
 from . import v1
+from .v1 import items, item
 
 
 class StandaloneApplication(BaseApplication):
@@ -27,6 +28,8 @@ def main():
     }
     app = Flask(__name__)
 
+    v1.bp.register_blueprint(items.bp)
+    v1.bp.register_blueprint(item.bp)
     app.register_blueprint(v1.bp)
 
     StandaloneApplication(app, conf).run()

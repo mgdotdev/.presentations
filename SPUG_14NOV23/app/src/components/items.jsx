@@ -4,10 +4,10 @@ let [app, setApp] = createSignal("cherrypy")
 
 function AddItem(props) {
   let element = (
-    <form>
-      <input name="name" placeholder="name" />
-      <input name="description" placeholder="description" />
-      <input type="submit" value="Submit"/>
+    <form style={{ maxWidth: "300px", margin: "0 auto", padding: "20px", border: "1px solid #ccc", borderRadius: "5px", boxShadow: "0 2px 5px rgba(0, 0, 0, 0.1)" }}>
+      <input style={{ width: "100%", padding: "8px", marginBottom: "16px", boxSizing: "border-box", borderRadius: "3px", border: "1px solid #ccc" }} name="name" placeholder="Name" />
+      <textarea style={{ width: "100%", padding: "8px", marginBottom: "16px", boxSizing: "border-box", borderRadius: "3px", border: "1px solid #ccc" }} name="description" placeholder="Description"></textarea>
+      <input style={{ backgroundColor: "#4CAF50", color: "white", padding: "10px 15px", border: "none", borderRadius: "3px", cursor: "pointer" }} type="submit" value="Submit" />
     </form>
   )
 
@@ -64,12 +64,10 @@ function Item(props) {
     return function() {
       let body = new FormData()
       body.append(key, getter())
-      console.log(body)
       fetch(url, {
         method: "PATCH",
         body: body,
       }).then((resp) => {
-        console.log(resp)
         if (resp.status == 204) {
           update()
         }
@@ -81,7 +79,11 @@ function Item(props) {
     let hook = props.hook
     let name = props.name
     let element = (
-      <input type="text" value={hook()}/>
+      <input
+        type="text"
+        value={hook()}
+        style={{width: "100%", padding: "8px", marginBottom: "16px", boxSizing: "border-box", borderRadius: "3px", border: "1px solid #ccc"}}
+      />
     )
     let getter = () => element.value
     element.addEventListener("change", sync(name, getter))
@@ -91,7 +93,11 @@ function Item(props) {
   function Check(props) {
     let name = props.name
     let element = (
-      <input type="checkbox" checked={() => done()}/>
+      <input
+        type="checkbox"
+        checked={() => done()}
+        style={{ marginBottom: "16px" }}
+      />
     )
     let getter = () => element.checked
     createEffect(() => {
@@ -102,11 +108,11 @@ function Item(props) {
   }
 
   let element = (
-    <div>
-      <Field name="name" hook={name}/>
-      <Field name="description" hook={description}/>
-      <Field name="timestamp" hook={timestamp}/>
-      <Check name="done"/>
+    <div style={{ padding: "20px", border: "1px solid #ddd", borderRadius: "10px", marginBottom: "20px" }}>
+      <Field name="name" hook={name} />
+      <Field name="description" hook={description} />
+      <Field name="timestamp" hook={timestamp} />
+      <Check name="done" />
     </div>
   )
 
@@ -118,7 +124,6 @@ function Item(props) {
       let key = Object.keys(resp).pop()
       return resp[key]
     }).then((resp) => {
-      console.log(resp)
       setName(resp.name)
       setDescription(resp.description)
       setTimestamp(resp.timestamp)
@@ -153,23 +158,18 @@ export function Items(props) {
     )
     element.addEventListener("change", (event) => {
       setApp(element.value)
-      console.log(app())
     })
     return element
   }
   let element = (
     <>
-      <div>
-        <h1>items</h1>
-        <AppSelector />
-      </div>
-      <div>
-        <h5>Add Item</h5>
-      </div>
+      <AppSelector />
+      <h5>Add Item</h5>
       <AddItem update={update}/>
       <br />
+      <h5>Items</h5>
       <For each={items()}>
-        {(item, idx) => {
+        {(item, _) => {
           return <Item update={update} url={item}/>
         }}
       </For>
