@@ -4,7 +4,7 @@ from core.lib import items, item
 
 bp = Blueprint("/items", __name__)
 
-@bp.get("/")
+@bp.get("/items")
 def get():
     return {
         "self": "https://api.spokanepython.com/flask/items/",
@@ -14,13 +14,13 @@ def get():
         ]
     }
 
-@bp.post("/")
+@bp.post("/items")
 def post(name, description, timestamp=None, done=False):
     items.add(item.new(name, description, timestamp, done))
     return "", 201
 
 
-@bp.delete("/")
+@bp.delete("/items")
 def delete():
     items.clear()
     return "", 204

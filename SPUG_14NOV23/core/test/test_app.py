@@ -52,8 +52,3 @@ class TestRedis:
         assert ak == k
         assert actual == expected
 
-
-
-
-
-

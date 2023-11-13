@@ -1,7 +1,6 @@
 import json
 
 from core.connections import REDIS
-from .item import new
 
 
 ITEMS = "items"

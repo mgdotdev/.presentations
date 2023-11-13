@@ -7,7 +7,10 @@ ENV FRAMEWORK=${FRAMEWORK}
 
 WORKDIR /home/user
 
-RUN python3 -m pip install -i https://pypi.org/simple pytest ipython requests pdbpp pip-tools \
+COPY --chown=user ./${FRAMEWORK}/requirements_testing.txt ./code/api/
+
+RUN python3 -m pip install -i https://pypi.org/simple pytest ipython requests pdbpp pip-tools coverage \
+ && python3 -m pip install -r ./code/api/requirements_testing.txt \
  && echo "alias interact from IPython import embed; embed()" > "/home/user/.pdbrc" \
  && echo 'export PS1="(${FRAMEWORK}) $PS1"' >> /home/user/.bashrc
 

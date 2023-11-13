@@ -20,18 +20,21 @@ class StandaloneApplication(BaseApplication):
     def load(self):
         return self.application
 
-
-def main():
-    conf = {
-        "bind": "0.0.0.0:8080",
-        "workers": 1,
-    }
+def setup_server():
     app = Flask(__name__)
 
     v1.bp.register_blueprint(items.bp)
     v1.bp.register_blueprint(item.bp)
     app.register_blueprint(v1.bp)
+    return app
 
+
+def main():
+    app = setup_server()
+    conf = {
+        "bind": "0.0.0.0:8080",
+        "workers": 1,
+    }
     StandaloneApplication(app, conf).run()
 
 

@@ -16,6 +16,7 @@ test() {
     }
     docker run -d -ti \
         -v $PWD/$2:/home/user/code/api \
+        -v $PWD/core:/home/user/code/core \
         --name $instance \
         --env-file .env/redis.env \
         demo-testing-$2 bash
